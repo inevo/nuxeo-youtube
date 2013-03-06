@@ -9,7 +9,7 @@
   </parent>
   <groupId>pt.inevo.nuxeo.youtube</groupId>
   <artifactId>youtube-publisher</artifactId>
-  <name>youtube-publisher</name>
+  <name>nuxeo-youtube-publisher</name>
   <description/>
   <dependencies>
     <dependency>
