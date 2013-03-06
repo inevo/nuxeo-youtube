@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-Vendor: Nuxeo
+Bundle-ClassPath: .
+Bundle-Version: 5.6
+Bundle-Name: youtube-publisher
+Bundle-ManifestVersion: 2
+Nuxeo-Component: OSGI-INF/extensions/youtube-publisher.xml
+Bundle-SymbolicName: youtube-publisher
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+

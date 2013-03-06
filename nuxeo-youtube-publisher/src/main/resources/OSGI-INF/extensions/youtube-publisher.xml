@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<component name="pt.inevo.nuxeo.youtube.publisher.YouTubePublisher" version="1.0">
+
+  <extension
+      target="org.nuxeo.ecm.platform.publisher.impl.service.PublisherServiceImpl"
+      point="factory">
+
+    <publishedDocumentFactory name="YouTubeDocModel"
+                              class="pt.inevo.nuxeo.youtube.publisher.YouTubePublishedDocumentFactory"/>
+
+  </extension>
+  
+  <extension
+      target="org.nuxeo.ecm.platform.publisher.impl.service.PublisherServiceImpl"
+      point="tree">
+
+    <publicationTree name="YouTubeTree"
+                     class="pt.inevo.nuxeo.youtube.publisher.YouTubePublicationTree"/>
+  </extension>
+
+<!-- 
+  <extension
+      target="org.nuxeo.ecm.platform.publisher.impl.service.PublisherServiceImpl"
+      point="treeInstance">
+
+    <publicationTreeConfig name="YouTubeSectionsTree" tree="YouTubeTree"
+                           factory="YouTubeDocModel" title="YouTube">
+      <parameters>
+        <parameter name="RootPath">/default-domain/youtube</parameter>
+        <parameter name="iconExpanded">/icons/folder_open.gif</parameter>
+        <parameter name="iconCollapsed">/icons/folder.gif</parameter>
+      </parameters>
+    </publicationTreeConfig>
+
+  </extension>
+   --> 
+</component>

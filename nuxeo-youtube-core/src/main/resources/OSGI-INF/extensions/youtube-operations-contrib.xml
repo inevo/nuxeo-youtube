@@ -1,0 +1,8 @@
+<component name="pt.inevo.nuxeo.video.youtube.operations">
+
+  <extension target="org.nuxeo.ecm.core.operation.OperationServiceComponent"
+    point="operations" >
+      <operation class="pt.inevo.nuxeo.youtube.operations.Upload" />
+   </extension>
+    
+</component>

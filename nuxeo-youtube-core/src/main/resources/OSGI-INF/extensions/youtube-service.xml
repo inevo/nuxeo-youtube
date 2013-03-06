@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<component name="pt.inevo.nuxeo.youtube.YouTubeService">
+
+  <requires>org.nuxeo.ecm.platform.oauth2.providers.OAuth2ServiceProviderRegistry</requires>
+  
+  <documentation>
+    YouTube Drive Service
+
+    @author Nelson Silva (nelson.silva@inevo.pt)
+  </documentation>
+
+  <implementation class="pt.inevo.nuxeo.youtube.YouTubeService" />
+
+  <service>
+    <provide
+      interface="pt.inevo.nuxeo.youtube.YouTubeService" />
+  </service>
+
+  <extension-point name="configuration">
+    <documentation>
+	    <code>
+		    <configuration>
+		      <provider>YouTube</provider>
+		      <accountEmail>EMAIL</accountEmail>
+		      <clientId>CLIENT_ID</clientId>
+		      <clientSecret>CLIENT_SECRET</clientSecret>
+		    </configuration>
+	    </code>
+  	</documentation>
+    <object class="pt.inevo.nuxeo.youtube.ConfigurationDescriptor" />
+  </extension-point>
+  
+</component>
