@@ -2,6 +2,7 @@ package pt.inevo.nuxeo.youtube;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -21,9 +22,15 @@ import com.google.api.client.json.jackson.JacksonFactory;
 
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.YouTube.Videos.Insert;
+import com.google.api.services.youtube.model.Activity;
+import com.google.api.services.youtube.model.ActivityContentDetails.Comment;
+import com.google.api.services.youtube.model.ActivityListResponse;
 import com.google.api.services.youtube.model.Channel;
 import com.google.api.services.youtube.model.PlaylistItem;
 import com.google.api.services.youtube.model.Video;
+import com.google.api.services.youtube.model.VideoListResponse;
+import com.google.api.services.youtube.model.VideoStatistics;
+import com.google.api.services.youtube.model.VideoStatus;
 
 public class YouTubeClient {
 
@@ -49,7 +56,7 @@ public class YouTubeClient {
 
     Credential credential;
 
-    public YouTubeClient(Credential credential) throws Exception {
+    public YouTubeClient(Credential credential) {
         this.credential = credential;
     }
 
@@ -120,7 +127,7 @@ public class YouTubeClient {
         mediaContent.setLength(length);
 
         Insert insert = getYouTube().videos().insert(
-                "snippet,statistics,status", video, mediaContent);
+                "snippet,status", video, mediaContent);
 
         // Set the upload type and add event listener.
         MediaHttpUploader uploader = insert.getMediaHttpUploader();
@@ -164,10 +171,53 @@ public class YouTubeClient {
         log.info("  - Tags: " + returnedVideo.getSnippet().getTags());
         log.info("  - Privacy Status: "
                 + returnedVideo.getStatus().getPrivacyStatus());
-        log.info("  - Video Count: "
-                + returnedVideo.getStatistics().getViewCount());
         return returnedVideo;
 
     }
 
+    public void setPrivacyStatus(String videoId, String privacyStatus) throws IOException {
+        Video youtubeVideo = new Video();
+        youtubeVideo.setId(videoId);
+
+        // set as unlisted for now
+        VideoStatus status = new VideoStatus();
+        status.setPrivacyStatus(privacyStatus);
+        youtubeVideo.setStatus(status);
+
+        getYouTube().videos().update("status", youtubeVideo).execute();
+    }
+
+    public void delete(String videoId) throws IOException {
+        getYouTube().videos().delete(videoId).execute();
+    }
+
+    public VideoStatistics getStatistics(String videoId) throws IOException {
+        VideoListResponse list = getYouTube().videos().list(videoId, "statistics").execute();
+
+        if (list.isEmpty()) {
+            return null;
+        }
+
+        Video video = list.getItems().get(0);
+        return video.getStatistics();
+
+    }
+
+    // TODO - Get YouTube comments once API v3 allows it
+    public List<Comment> getComments(String channelId) throws IOException {
+        ActivityListResponse response = getYouTube().activities().list("id,snippet,contentDetails")
+                .setChannelId(channelId)
+                .setMaxResults(new Long(50))
+                .execute();
+        List<Comment> comments = Collections.emptyList();
+        List<Activity> list = response.getItems();
+        for (Activity activity : list) {
+            String type = activity.getSnippet().getType();
+
+            if (type.equals("comment")) {
+                Comment comment = activity.getContentDetails().getComment();
+            }
+        }
+        return comments;
+    }
 }

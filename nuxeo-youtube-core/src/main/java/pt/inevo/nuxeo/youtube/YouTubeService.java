@@ -1,5 +1,6 @@
 package pt.inevo.nuxeo.youtube;
 
+import java.io.IOException;
 import java.util.Arrays;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -111,18 +112,24 @@ public class YouTubeService extends DefaultComponent {
         getOAuth2ServiceProvider();
     }
 
-    public YouTubeClient getYouTubeClient(String userId) throws Exception {
+    public YouTubeClient getYouTubeClient(String userId) throws ClientException {
         YouTubeClient youTubeClient = null;
         Credential credential = null;
 
         // Use system wide OAuth2 provider
         if (getOAuth2ServiceProvider() != null) {
             AuthorizationCodeFlow flow = getOAuth2ServiceProvider().getAuthorizationCodeFlow(HTTP_TRANSPORT, JSON_FACTORY);
-            credential = flow.loadCredential(userId);
+            try {
+                credential = flow.loadCredential(userId);
+            } catch (IOException e) {
+                throw new ClientException(e.getMessage());
+            }
         }
 
         if (credential != null && credential.getAccessToken() != null) {
             youTubeClient = new YouTubeClient(credential);
+        } else {
+            throw new ClientException("Failed to get YouTube credentials");
         }
 
         return youTubeClient;
