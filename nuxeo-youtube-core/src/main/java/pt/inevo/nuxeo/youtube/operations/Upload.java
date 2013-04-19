@@ -26,7 +26,7 @@ import pt.inevo.nuxeo.youtube.YouTubeService;
 /**
  * @author nelson.silva
  */
-@Operation(id = Upload.ID, category = Constants.CAT_DOCUMENT, label = "ShareInYammer", description = "This operation will post the given document and comment on yammer")
+@Operation(id = Upload.ID, category = Constants.CAT_DOCUMENT, label = "UploadToYouTube", description = "This operation will upload given video document to YouTube")
 public class Upload {
 
 	public static final String ID = "UploadToYouTube";

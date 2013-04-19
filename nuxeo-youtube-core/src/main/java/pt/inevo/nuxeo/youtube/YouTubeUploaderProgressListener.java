@@ -1,6 +1,6 @@
 package pt.inevo.nuxeo.youtube;
 
-interface YouTubeUploaderProgressListener {
+public interface YouTubeUploaderProgressListener {
     void onStart();
     void onProgress(double progress);
     void onComplete();
