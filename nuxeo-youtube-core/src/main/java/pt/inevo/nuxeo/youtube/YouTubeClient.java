@@ -22,9 +22,6 @@ import com.google.api.client.json.jackson.JacksonFactory;
 
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.YouTube.Videos.Insert;
-import com.google.api.services.youtube.model.Activity;
-import com.google.api.services.youtube.model.ActivityContentDetails.Comment;
-import com.google.api.services.youtube.model.ActivityListResponse;
 import com.google.api.services.youtube.model.Channel;
 import com.google.api.services.youtube.model.PlaylistItem;
 import com.google.api.services.youtube.model.Video;
@@ -79,7 +76,7 @@ public class YouTubeClient {
     }
 
     public List<Video> getVideos() throws IOException {
-        return getYouTube().videos().list(null, "snippet").execute().getItems();
+        return getYouTube().videos().list("snippet").execute().getItems();
     }
 
     public List<Channel> getChannels() throws IOException {
@@ -91,8 +88,7 @@ public class YouTubeClient {
         return getYouTube().playlistItems().list("snippet").setPlaylistId(id).execute().getItems();
     }
 
-    public Video upload(Video video, InputStream stream, String type,
-            long length) throws IOException {
+    public Video upload(Video video, InputStream stream, String type, long length) throws IOException {
         YouTubeUploaderProgressListener progressListener = new YouTubeUploaderProgressListener() {
 
             @Override
@@ -107,27 +103,25 @@ public class YouTubeClient {
 
             @Override
             public void onComplete() {
-                // TODO Auto-generated method stub
-
+                log.info("Upload complete.");
             }
 
             @Override
             public void onError() {
-
+                log.info("Upload error.");
             }
 
         };
         return upload(video, stream, type, length, progressListener);
     }
 
-    public Video upload(Video video, InputStream stream, String type,
-            long length, final YouTubeUploaderProgressListener uploadListener)
-            throws IOException {
+    public Video upload(Video video, InputStream stream, String type, long length,
+                        final YouTubeUploaderProgressListener uploadListener) throws IOException {
+
         InputStreamContent mediaContent = new InputStreamContent(type, stream);
         mediaContent.setLength(length);
 
-        Insert insert = getYouTube().videos().insert(
-                "snippet,status", video, mediaContent);
+        Insert insert = getYouTube().videos().insert("snippet,status", video, mediaContent);
 
         // Set the upload type and add event listener.
         MediaHttpUploader uploader = insert.getMediaHttpUploader();
@@ -141,22 +135,21 @@ public class YouTubeClient {
 
         MediaHttpUploaderProgressListener progressListener = new MediaHttpUploaderProgressListener() {
             @Override
-            public void progressChanged(MediaHttpUploader uploader)
-                    throws IOException {
+            public void progressChanged(MediaHttpUploader uploader) throws IOException {
                 switch (uploader.getUploadState()) {
-                case INITIATION_STARTED:
-                case INITIATION_COMPLETE:
-                    uploadListener.onStart();
-                    break;
-                case MEDIA_IN_PROGRESS:
-                    uploadListener.onProgress(uploader.getProgress());
-                    break;
-                case MEDIA_COMPLETE:
-                    uploadListener.onComplete();
-                    break;
-                case NOT_STARTED:
-                    System.out.println("Upload Not Started!");
-                    break;
+                    case INITIATION_STARTED:
+                    case INITIATION_COMPLETE:
+                        uploadListener.onStart();
+                        break;
+                    case MEDIA_IN_PROGRESS:
+                        uploadListener.onProgress(uploader.getProgress());
+                        break;
+                    case MEDIA_COMPLETE:
+                        uploadListener.onComplete();
+                        break;
+                    case NOT_STARTED:
+                        log.info("Upload Not Started!");
+                        break;
                 }
             }
         };
@@ -164,13 +157,16 @@ public class YouTubeClient {
 
         // Execute upload.
         Video returnedVideo = insert.execute();
+
         // Print out returned results.
-        log.info("\n================== Returned Video ==================\n");
-        log.info("  - Id: " + returnedVideo.getId());
-        log.info("  - Title: " + returnedVideo.getSnippet().getTitle());
-        log.info("  - Tags: " + returnedVideo.getSnippet().getTags());
-        log.info("  - Privacy Status: "
-                + returnedVideo.getStatus().getPrivacyStatus());
+        if (returnedVideo != null) {
+            log.info("\n================== Returned Video ==================\n");
+            log.info("  - Id: " + returnedVideo.getId());
+            log.info("  - Title: " + returnedVideo.getSnippet().getTitle());
+            log.info("  - Tags: " + returnedVideo.getSnippet().getTags());
+            log.info("  - Privacy Status: " + returnedVideo.getStatus().getPrivacyStatus());
+        }
+
         return returnedVideo;
 
     }
@@ -192,7 +188,7 @@ public class YouTubeClient {
     }
 
     public VideoStatistics getStatistics(String videoId) throws IOException {
-        VideoListResponse list = getYouTube().videos().list(videoId, "statistics").execute();
+        VideoListResponse list = getYouTube().videos().list("statistics").execute();
 
         if (list.isEmpty()) {
             return null;
@@ -200,10 +196,9 @@ public class YouTubeClient {
 
         Video video = list.getItems().get(0);
         return video.getStatistics();
-
     }
 
-    // TODO - Get YouTube comments once API v3 allows it
+    /* TODO - Get YouTube comments once API v3 allows it
     public List<Comment> getComments(String channelId) throws IOException {
         ActivityListResponse response = getYouTube().activities().list("id,snippet,contentDetails")
                 .setChannelId(channelId)
@@ -220,4 +215,5 @@ public class YouTubeClient {
         }
         return comments;
     }
+    */
 }

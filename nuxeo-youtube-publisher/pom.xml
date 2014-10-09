@@ -15,7 +15,7 @@
     <dependency>
       <groupId>pt.inevo.nuxeo.youtube</groupId>
       <artifactId>nuxeo-youtube-core</artifactId>
-      <version>5.7-SNAPSHOT</version>
+      <version>5.8.0-HF08</version>
     </dependency>
     <dependency>
       <groupId>org.nuxeo.ecm.platform</groupId>
