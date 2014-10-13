@@ -5,7 +5,7 @@
   <parent>
     <groupId>pt.inevo.nuxeo.youtube</groupId>
     <artifactId>nuxeo-youtube</artifactId>
-    <version>5.8.0-HF08</version>
+    <version>5.8.0-HF23</version>
   </parent>
   <groupId>pt.inevo.nuxeo.youtube</groupId>
   <artifactId>nuxeo-youtube-core</artifactId>
