@@ -1,9 +1,8 @@
 package pt.inevo.nuxeo.youtube.operations;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.api.services.youtube.model.Video;
+import com.google.api.services.youtube.model.VideoContentDetails;
+import com.google.api.services.youtube.model.VideoSnippet;
 import org.nuxeo.ecm.automation.core.Constants;
 import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
@@ -14,13 +13,12 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.platform.video.TranscodedVideo;
 import org.nuxeo.ecm.platform.video.VideoDocument;
 import org.nuxeo.runtime.api.Framework;
-
-import com.google.api.services.youtube.model.Video;
-import com.google.api.services.youtube.model.VideoContentDetails;
-import com.google.api.services.youtube.model.VideoSnippet;
-
 import pt.inevo.nuxeo.youtube.YouTubeClient;
 import pt.inevo.nuxeo.youtube.YouTubeService;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
