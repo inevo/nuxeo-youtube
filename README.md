@@ -13,4 +13,7 @@ SCOPES = https://www.googleapis.com/auth/youtube
 
 If you're using the installed applications instead of the service account you need to start the authorization flow by going to:
 
-https://accounts.google.com/o/oauth2/auth?client_id=CLIENT_ID&redirect_uri=http://localhost:8080/nuxeo/site/oauth2/YouTube/callback?app%3Dtrue&response_type=code&scope=https://www.googleapis.com/auth/youtube
+https://accounts.google.com/o/oauth2/auth?client_id=CLIENT_ID&redirect_uri=http://localhost:8080/nuxeo/site/oauth2/YouTube/callback?app%3Dtrue&response_type=code&scope=https://www.googleapis.com/auth/youtube&access_type=offline
+
+
+https://accounts.google.com/o/oauth2/auth?client_id=CLIENT_ID&redirect_uri=http://localhost:8080/nuxeo/site/oauth2/YouTube/callback?app%3Dtrue&response_type=code&scope=https://www.googleapis.com/auth/youtube&access_type=offline

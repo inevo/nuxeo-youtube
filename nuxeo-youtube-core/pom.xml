@@ -12,13 +12,13 @@
   <name>nuxeo-youtube-core</name>
   <description/>
    <properties>
-    <google.client.version>1.12.0-beta</google.client.version>
+    <google.client.version>1.19.0</google.client.version>
   </properties>
   <dependencies>
     <dependency>
       <groupId>com.google.apis</groupId>
       <artifactId>google-api-services-youtube</artifactId>
-      <version>v3-rev118-1.19.0</version>
+      <version>v3-rev124-1.19.0</version>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
